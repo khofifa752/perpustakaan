@@ -15,7 +15,7 @@ class PengembalianController extends Controller
         $q = $request->query('q');
 
         $bookings = Booking::with(['book', 'user'])
-            // hanya yang sudah diajukan pengembalian oleh user
+           
             ->where('status', 'Menunggu Pengembalian')
             ->when($q, function ($query) use ($q) {
                 $query->where('code', 'like', "%{$q}%")
@@ -35,7 +35,7 @@ class PengembalianController extends Controller
 
     public function show(Booking $booking)
     {
-        // detail proses pengembalian hanya untuk status menunggu
+        
         abort_unless($booking->status === 'Menunggu Pengembalian', 404);
 
         $booking->load(['book', 'user']);
@@ -60,4 +60,6 @@ class PengembalianController extends Controller
         return redirect()->route('admin.pengembalian.index')
             ->with('success', 'Pengembalian berhasil dikonfirmasi.');
     }
+
+    
 }

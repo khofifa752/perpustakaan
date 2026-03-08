@@ -30,24 +30,29 @@ Route::resource('booking', BookingController::class)
     ->only(['index', 'store', 'show'])
     ->middleware('auth');
 
+
+Route::patch('/booking/{booking}/ajukan-pengembalian', [BookingController::class, 'ajukanPengembalian'])
+    ->middleware('auth')
+    ->name('booking.ajukanPengembalian');
+
 // review peminjam
 Route::post('/booking/{booking}/review', [ReviewController::class, 'store'])
     ->middleware('auth')
     ->name('booking.review.store');
 
+
 Route::get('/dashboard', function () {
     $role = auth()->user()->role;
 
-    if ($role === 'admin') return redirect()->route('admin.dashboard');
-    if ($role === 'petugas') return redirect()->route('petugas.dashboard');
+    if ($role === 'admin' || $role === 'petugas') {
+        return redirect()->route('admin.dashboard');
+    }
 
-Route::patch('/booking/{booking}/ajukan-pengembalian', [BookingController::class, 'ajukanPengembalian'])
-        ->name('booking.ajukanPengembalian');
-    // peminjam
     return redirect()->route('home');
 })->middleware('auth')->name('dashboard');
 
 
+// admin & petugas routes
 Route::prefix('dashboard')
     ->as('admin.')
     ->middleware(['auth', 'role:admin,petugas'])
@@ -71,23 +76,32 @@ Route::prefix('dashboard')
         Route::get('/peminjaman/{booking}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
         Route::patch('/peminjaman/{booking}', [PeminjamanController::class, 'updateStatus'])->name('peminjaman.updateStatus');
 
-        //PENGEMBALIAN 
-        Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
-        Route::patch('/pengembalian/{booking}/konfirmasi', [PengembalianController::class, 'konfirmasi'])
-          ->name('pengembalian.konfirmasi');
-        
+        // PENGEMBALIAN (ADMIN/PETUGAS KONFIRMASI)
+        Route::get('/pengembalian', [PengembalianController::class, 'index'])
+            ->name('pengembalian.index');
+
+        Route::get('/pengembalian/{booking}', [PengembalianController::class, 'show'])
+            ->name('pengembalian.show');
+
+        Route::patch('/pengembalian/{booking}/konfirmasi', [PengembalianController::class, 'kembalikan'])
+            ->name('pengembalian.konfirmasi');
+
         // USERS
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-        Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
+        Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggle-status'])->name('users.toggleStatus');
 
-        //KELOLA ULASAN 
+        // KELOLA ULASAN
         Route::get('/reviews', [ReviewAdminController::class, 'index'])->name('reviews.index');
         Route::delete('/reviews/{review}', [ReviewAdminController::class, 'destroy'])->name('reviews.destroy');
+
+        //GENERATE LAPORAN
+        Route::get('/laporan/buku', [DashboardController::class, 'laporanBuku'])
+        ->name('laporan.buku');
     });
 
 
-// kelola petugas
+// kelola petugas (admin only)
 Route::prefix('admin')
     ->as('admin.')
     ->middleware(['auth', 'role:admin'])

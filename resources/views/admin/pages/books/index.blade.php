@@ -8,10 +8,27 @@
     <p class="text-sm text-gray-500">Kelola data buku perpustakaan</p>
   </div>
 
-  <a href="{{ route('admin.books.create') }}"
-     class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition shadow-sm">
-    + Tambah Buku
-  </a>
+<div class="flex gap-2">
+
+    <a href="#"
+       class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg">
+       
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             class="w-4 h-4" 
+             fill="none" 
+             viewBox="0 0 24 24" 
+             stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
+        </svg>
+        Generate Laporan
+    </a>
+    <a href="{{ route('admin.books.create') }}"
+       class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg">
+        + Tambah Buku
+    </a>
+</div>
+
 </div>
 
 {{-- Alert --}}

@@ -50,7 +50,7 @@
                 Detail
               </a>
 
-              <form action="{{ route('admin.pengembalian.kembalikan', $b->id) }}" method="POST"
+              <form action="{{ route('admin.pengembalian.konfirmasi', $b->id) }}" method="POST"
                     onsubmit="return confirm('Yakin buku sudah dikembalikan?')">
                 @csrf
                 @method('PATCH')

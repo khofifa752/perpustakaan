@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Booking;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -36,5 +38,26 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Status user berhasil diubah');
+    }
+
+    public function laporanPdf(Request $request)
+    {
+        $q = $request->query('q');
+
+        $users = User::where('role', 'peminjam')
+            ->withCount('bookings')
+            ->when($q, function ($query) use ($q) {
+                $query->where(function ($subQuery) use ($q) {
+                    $subQuery->where('name', 'like', "%{$q}%")
+                        ->orWhere('email', 'like', "%{$q}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        $pdf = Pdf::loadView('admin.users.laporan-pdf', compact('users'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('laporan-user.pdf');
     }
 }

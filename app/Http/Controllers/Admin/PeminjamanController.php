@@ -6,6 +6,8 @@ use App\Models\Booking;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class PeminjamanController extends Controller
 {
@@ -67,5 +69,53 @@ class PeminjamanController extends Controller
         ->with('success', 'Status peminjaman berhasil diupdate.');
     }
 
+public function laporanPdf(Request $request)
+{
+    $q = $request->query('q');
 
+    $bookings = Booking::with(['book', 'user'])
+        ->when($q, function ($query) use ($q) {
+            $query->where(function ($subQuery) use ($q) {
+                $subQuery->where('code', 'like', "%{$q}%")
+                    ->orWhereHas('book', function ($bookQuery) use ($q) {
+                        $bookQuery->where('title', 'like', "%{$q}%");
+                    })
+                    ->orWhereHas('user', function ($userQuery) use ($q) {
+                        $userQuery->where('name', 'like', "%{$q}%");
+                    });
+            });
+        })
+        ->latest()
+        ->get();
+
+    $pdf = Pdf::loadView('admin.peminjaman.laporan-pdf', compact('bookings'))
+        ->setPaper('a4', 'portrait');
+
+    return $pdf->stream('laporan-peminjaman.pdf');
+}
+
+public function downloadPdf(Request $request)
+{
+    $q = $request->query('q');
+
+    $bookings = Booking::with(['book', 'user'])
+        ->when($q, function ($query) use ($q) {
+            $query->where(function ($subQuery) use ($q) {
+                $subQuery->where('code', 'like', "%{$q}%")
+                    ->orWhereHas('book', function ($bookQuery) use ($q) {
+                        $bookQuery->where('title', 'like', "%{$q}%");
+                    })
+                    ->orWhereHas('user', function ($userQuery) use ($q) {
+                        $userQuery->where('name', 'like', "%{$q}%");
+                    });
+            });
+        })
+        ->latest()
+        ->get();
+
+    $pdf = Pdf::loadView('admin.peminjaman.laporan-pdf', compact('bookings'))
+        ->setPaper('a4', 'portrait');
+
+    return $pdf->download('laporan-peminjaman.pdf');
+}
     }

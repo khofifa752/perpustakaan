@@ -5,7 +5,7 @@
     position: fixed;
     top: 0; left: 0;
     width: 100%;
-    z-index: 99999; /* penting: biar ga ketiban */
+    z-index: 99999; 
     transition: all .3s ease;
   }
   .custom-navbar.scrolled{
@@ -14,7 +14,7 @@
     box-shadow: 0 4px 20px rgba(0,0,0,.08);
   }
 
-  /* INI KUNCINYA: navbar kanan selalu tampil */
+  
   .nav-wrap{
     display: flex;
     justify-content: flex-end;
@@ -22,7 +22,7 @@
   }
 
   .navbar-nav{
-    display: flex;               /* <-- tanpa bootstrap pun jadi flex */
+    display: flex;               
     flex-direction: row;
     align-items: center;
     background: #fff;
@@ -103,14 +103,32 @@
           <a class="nav-link {{ Request::is('booking*') ? 'active' : '' }}" href="/booking">👥 Riwayat</a>
         </li>
 
-        @auth
-          <li class="nav-item">
-            <form method="POST" action="{{ route('logout') }}" style="margin:0;">
-              @csrf
-              <button type="submit" class="nav-link">🚪 Logout</button>
-            </form>
-          </li>
-        @endauth
+       @auth
+  <li class="nav-item">
+    <a class="nav-link {{ Request::is('collections*') ? 'active' : '' }}" href="{{ route('collections.index') }}">
+      🔖 Koleksi Saya
+      @php $koleksiCount = auth()->user()->collections()->count(); @endphp
+      @if($koleksiCount > 0)
+        <span style="
+          background:#e74c3c;
+          color:#fff;
+          font-size:10px;
+          font-weight:700;
+          border-radius:999px;
+          padding:1px 7px;
+          line-height:16px;
+        ">{{ $koleksiCount }}</span>
+      @endif
+    </a>
+  </li>
+  <li class="nav-item">
+    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+      @csrf
+      <button type="submit" class="nav-link">🚪 Logout</button>
+    </form>
+  </li>
+@endauth
+
       </ul>
     </div>
   </div>

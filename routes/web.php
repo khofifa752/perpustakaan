@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PengembalianController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PetugasController;
 use App\Http\Controllers\Admin\ReviewAdminController;
+use App\Http\Controllers\CollectionController;
 
 Route::get('/', function () {
     return view('partials.index');
@@ -39,7 +40,8 @@ Route::patch('/booking/{booking}/ajukan-pengembalian', [BookingController::class
 Route::post('/booking/{booking}/review', [ReviewController::class, 'store'])
     ->middleware('auth')
     ->name('booking.review.store');
-
+    
+Route::resource('collections', CollectionController::class);
 
 Route::get('/dashboard', function () {
     $role = auth()->user()->role;
@@ -98,6 +100,27 @@ Route::prefix('dashboard')
         //GENERATE LAPORAN
         Route::get('/laporan/buku', [DashboardController::class, 'laporanBuku'])
         ->name('laporan.buku');
+
+        //buku
+        Route::get('/books/laporan/pdf', [AdminBooksController::class, 'laporanPdf'])
+        ->name('books.laporan.pdf');
+
+        //peminjaman
+        Route::get('/peminjaman/laporan/pdf', [PeminjamanController::class, 'laporanPdf'])
+        ->name('peminjaman.laporan.pdf');
+
+        Route::get('/peminjaman/laporan/download', [PeminjamanController::class, 'downloadPdf'])
+        ->name('peminjaman.laporan.download');
+        
+        //user
+        Route::get('/users/laporan/pdf', [UserController::class, 'laporanPdf'])
+        ->name('users.laporan.pdf');
+
+        //petugas
+        Route::get('/petugas/laporan/pdf', [PetugasController::class, 'laporanPdf'])
+        ->name('petugas.laporan.pdf');
+        Route::get('/petugas/laporan/download', [PetugasController::class, 'downloadPdf'])
+        ->name('petugas.laporan.download');
     });
 
 

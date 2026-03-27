@@ -10,25 +10,141 @@
 
 <div class="flex gap-2">
 
-    <a href="#"
-       class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg">
-       
-        <svg xmlns="http://www.w3.org/2000/svg" 
-             class="w-4 h-4" 
-             fill="none" 
-             viewBox="0 0 24 24" 
-             stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
-        </svg>
+    <div style="display:flex; gap:10px;">
+    <button type="button" onclick="openLaporanModal()"
+        style="background:#16a34a; color:white; padding:12px 18px; border:none; border-radius:14px; font-weight:600; cursor:pointer;">
         Generate Laporan
-    </a>
+    </button>
+
     <a href="{{ route('admin.books.create') }}"
-       class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg">
+        style="background:#2563eb; color:white; padding:12px 18px; border-radius:14px; text-decoration:none; font-weight:600;">
         + Tambah Buku
     </a>
 </div>
 
+</div>
+</div>
+
+<div id="laporanModal" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+    padding:24px;
+">
+    <div style="
+        width:100%;
+        max-width:950px;
+        max-height:90vh;
+        overflow:auto;
+        background:#f3f4f6;
+        border-radius:20px;
+        box-shadow:0 25px 60px rgba(0,0,0,0.25);
+        padding:20px;
+    ">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+                <h2 style="margin:0; font-size:24px; font-weight:700;">Preview Laporan Buku</h2>
+                <p style="margin:4px 0 0; color:#6b7280;">Tampilan laporan seperti file dokumen</p>
+            </div>
+
+            <button type="button" onclick="closeLaporanModal()" style="
+                background:#ef4444;
+                color:white;
+                border:none;
+                border-radius:12px;
+                padding:10px 16px;
+                font-weight:600;
+                cursor:pointer;
+            ">
+                Tutup
+            </button>
+        </div>
+
+        <div id="printArea" style="
+            background:white;
+            width:100%;
+            max-width:800px;
+            margin:0 auto;
+            min-height:1000px;
+            padding:40px;
+            border-radius:8px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.08);
+        ">
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="font-size:26px; font-weight:700;">Laporan Buku Perpustakaan</div>
+                <div style="margin-top:6px; color:#6b7280;">Daftar data buku perpustakaan</div>
+            </div>
+
+            <div style="margin-bottom:14px; font-size:14px;">
+                <strong>Tanggal Cetak:</strong> {{ now()->format('d-m-Y H:i') }}
+            </div>
+
+            <table width="100%" cellspacing="0" cellpadding="10" style="border-collapse:collapse; font-size:14px;">
+                <thead>
+                    <tr style="background:#f3f4f6;">
+                        <th style="border:1px solid #d1d5db;" align="left">No</th>
+                        <th style="border:1px solid #d1d5db;" align="left">Judul</th>
+                        <th style="border:1px solid #d1d5db;" align="left">Penulis</th>
+                        <th style="border:1px solid #d1d5db;" align="left">Penerbit</th>
+                        <th style="border:1px solid #d1d5db;" align="left">Kategori</th>
+                        <th style="border:1px solid #d1d5db;" align="left">Stok</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($books as $index => $book)
+                        <tr>
+                            <td style="border:1px solid #d1d5db;">{{ $index + 1 }}</td>
+                            <td style="border:1px solid #d1d5db;">{{ $book->title }}</td>
+                            <td style="border:1px solid #d1d5db;">{{ $book->author }}</td>
+                            <td style="border:1px solid #d1d5db;">{{ $book->publisher }}</td>
+                            <td style="border:1px solid #d1d5db;">{{ $book->category->name ?? '-' }}</td>
+                            <td style="border:1px solid #d1d5db;">{{ $book->stock }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" style="border:1px solid #d1d5db; text-align:center;">
+                                Tidak ada data buku
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            <div style="margin-top:16px; font-size:14px;">
+                <strong>Total Buku:</strong> {{ $books->count() }}
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:18px;">
+            <button type="button" onclick="printLaporan()" style="
+                background:#f59e0b;
+                color:white;
+                border:none;
+                border-radius:12px;
+                padding:12px 18px;
+                font-weight:600;
+                cursor:pointer;
+            ">
+                Print
+            </button>
+
+            <a href="{{ route('admin.books.laporan.pdf', ['q' => request('q')]) }}" style="
+                background:#2563eb;
+                color:white;
+                text-decoration:none;
+                border-radius:12px;
+                padding:12px 18px;
+                font-weight:600;
+                display:inline-block;
+            ">
+                Download PDF
+            </a>
+        </div>
+    </div>
 </div>
 
 {{-- Alert --}}
@@ -179,28 +295,75 @@
 
 @section('script')
 <script>
-
 const searchInput = document.getElementById('tableSearch');
 const tbody = document.getElementById('booksTbody');
 
-if (searchInput && tbody)
-{
-  const rows = Array.from(tbody.querySelectorAll('tr'));
+if (searchInput && tbody) {
+    const rows = Array.from(tbody.querySelectorAll('tr'));
 
-  searchInput.addEventListener('input', () =>
-  {
-    const q = searchInput.value.toLowerCase();
+    searchInput.addEventListener('input', () => {
+        const q = searchInput.value.toLowerCase();
 
-    rows.forEach(row =>
-    {
-      row.style.display =
-        row.innerText.toLowerCase().includes(q)
-        ? ''
-        : 'none';
+        rows.forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
+        });
     });
-
-  });
 }
 
+function openLaporanModal() {
+    document.getElementById('laporanModal').style.display = 'flex';
+}
+
+function closeLaporanModal() {
+    document.getElementById('laporanModal').style.display = 'none';
+}
+
+window.addEventListener('click', function (e) {
+    const modal = document.getElementById('laporanModal');
+    if (e.target === modal) {
+        closeLaporanModal();
+    }
+});
+
+function printLaporan() {
+    const content = document.getElementById('printArea').innerHTML;
+    const printWindow = window.open('', '', 'width=900,height=700');
+
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Laporan Buku</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 24px;
+                    color: #111827;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 14px;
+                }
+                th, td {
+                    border: 1px solid #d1d5db;
+                    padding: 8px;
+                    text-align: left;
+                    vertical-align: top;
+                }
+                th {
+                    background: #f3f4f6;
+                }
+            </style>
+        </head>
+        <body>
+            ${content}
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+}
 </script>
 @endsection

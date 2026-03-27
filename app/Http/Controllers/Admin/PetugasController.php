@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class PetugasController extends Controller
 {
@@ -79,5 +81,44 @@ class PetugasController extends Controller
         ->with('success', 'Akun petugas berhasil dihapus.');
 }
 
+public function laporanPdf(Request $request)
+{
+    $q = $request->query('q');
+
+    $petugas = User::where('role', 'petugas')
+        ->when($q, function ($query) use ($q) {
+            $query->where(function ($subQuery) use ($q) {
+                $subQuery->where('name', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%");
+            });
+        })
+        ->latest()
+        ->get();
+
+    $pdf = Pdf::loadView('admin.petugas.laporan-pdf', compact('petugas'))
+        ->setPaper('a4', 'portrait');
+
+    return $pdf->stream('laporan-petugas.pdf');
+}
+
+public function downloadPdf(Request $request)
+{
+    $q = $request->query('q');
+
+    $petugas = User::where('role', 'petugas')
+        ->when($q, function ($query) use ($q) {
+            $query->where(function ($subQuery) use ($q) {
+                $subQuery->where('name', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%");
+            });
+        })
+        ->latest()
+        ->get();
+
+    $pdf = Pdf::loadView('admin.petugas.laporan-pdf', compact('petugas'))
+        ->setPaper('a4', 'portrait');
+
+    return $pdf->download('laporan-petugas.pdf');
+}
 
 }

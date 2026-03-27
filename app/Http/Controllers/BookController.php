@@ -14,10 +14,10 @@ class BookController extends Controller
      */
    public function index(Request $request)
 {
-        $booksQuery = Book::with('category')
-            ->withAvg('reviews', 'rating') ;
-            
-    // search keyword 
+    $booksQuery = Book::with('category')
+        ->withAvg('reviews', 'rating');
+
+    // SEARCH
     if ($request->filled('searchKeyword')) {
         $keyword = $request->searchKeyword;
 
@@ -27,17 +27,16 @@ class BookController extends Controller
         });
     }
 
-    // filter category
-    if ($request->filled('category')) {
-        $booksQuery->where('category_id', $request->category);
+    
+    if ($request->filled('categories')) {
+        $booksQuery->whereIn('category_id', $request->categories);
     }
 
     return view('pages.books', [
-        'books' => $booksQuery->get(), 
+        'books' => $booksQuery->get(),
         'categories' => Category::all(),
     ]);
 }
-
     /**
      * Show the form for creating a new resource.
      */ 

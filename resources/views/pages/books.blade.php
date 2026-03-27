@@ -20,52 +20,47 @@ body {
   margin-bottom: 2rem;
 }
 
-.toolbar .input-group input {
+.form-control {
   height: 42px;
   border: 1.5px solid #d4c9b5;
   background: #fff;
-  font-family: inherit;
   font-size: .88rem;
   color: #2c2416;
   outline: none;
-  transition: border .2s, box-shadow .2s;
 }
 
-.toolbar .input-group input:focus {
-  border-color: #8a6d45;
-  box-shadow: 0 0 0 3px rgba(138,109,69,.12);
-  z-index: 1;
-}
-
-.toolbar .input-group input::placeholder {
-  color: #b8a88a;
-}
-
-.toolbar .form-select {
-  height: 42px;
-  border: 1.5px solid #d4c9b5;
-  font-family: inherit;
-  font-size: .8rem;
-  color: #5c4a32;
-  flex: unset;
-  width: 130px;
-}
-
-.toolbar .btn-warning {
+.btn-warning {
   height: 42px;
   background: #2c2416;
   border: none;
   color: #f5f0e8;
-  font-family: inherit;
   font-weight: 600;
   font-size: .85rem;
   padding: 0 1.2rem;
-  transition: background .2s;
 }
 
-.toolbar .btn-warning:hover {
+.btn-warning:hover {
   background: #8a6d45;
+}
+
+.category-pill {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: #eee;
+  color: #444;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.category-checkbox:checked + .category-pill {
+  background: #2c2416;
   color: #fff;
+}
+
+.category-pill:hover {
+  background: #d4c9b5;
 }
 
 .book-grid {
@@ -74,202 +69,117 @@ body {
   gap: 1.5rem;
 }
 
-/* ✅ FIX: bikin card flex supaya tombol selalu rata bawah */
+.book-card-wrap {
+  position: relative;
+}
+
 .book-card {
   border-radius: 14px;
   overflow: hidden;
   background: #fff;
   box-shadow: 0 2px 14px rgba(44,36,22,.09);
-  transition: transform .25s, box-shadow .25s;
-  animation: rise .45s ease both;
+  transition: .25s;
   text-decoration: none;
-
-  display: flex;            /* dari block -> flex */
+  display: flex;
   flex-direction: column;
-  height: 100%;
 }
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.book-card:nth-child(1) { animation-delay: .04s; }
-.book-card:nth-child(2) { animation-delay: .08s; }
-.book-card:nth-child(3) { animation-delay: .12s; }
-.book-card:nth-child(4) { animation-delay: .16s; }
-.book-card:nth-child(5) { animation-delay: .20s; }
-.book-card:nth-child(6) { animation-delay: .24s; }
-.book-card:nth-child(7) { animation-delay: .28s; }
-.book-card:nth-child(8) { animation-delay: .32s; }
 
 .book-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(44,36,22,.16);
+  transform: translateY(-5px);
 }
 
-/* COVER */
 .book-cover {
   height: 210px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1rem 1rem 1rem 1.25rem;
-  overflow: hidden;
-}
-
-.book-cover::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 12px;
-  height: 100%;
-  background: rgba(0,0,0,.18);
-  z-index: 1;
 }
 
 .book-cover img {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
 }
 
 .cover-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.55) 40%, transparent 100%);
-  z-index: 2;
-}
-
-.cover-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 3;
-  padding: 4px 11px;
-  border-radius: 100px;
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  background: linear-gradient(to top, rgba(0,0,0,.6), transparent);
 }
 
 .cover-meta {
-  position: relative;
-  z-index: 3;
-  color: rgba(255,255,255,.9);
-  font-family: 'Lora', serif;
-}
-
-.cover-cat {
-  font-size: .6rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  opacity: .8;
-  margin-bottom: .3rem;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: #fff;
 }
 
 .cover-title {
-  font-size: .95rem;
-  font-style: italic;
-  line-height: 1.25;
-  font-weight: 600;
+  font-size: .9rem;
+  font-weight: bold;
 }
 
-/* BODY */
 .book-body {
-  padding: .9rem 1rem 1rem;
-
-  display: flex;            /* ✅ FIX */
+  padding: 10px;
+  display: flex;
   flex-direction: column;
-  flex: 1;                  /* ✅ biar ngisi sisa tinggi card */
+  flex: 1;
 }
 
-/* judul tetap 2 baris, + kasih tinggi minimum biar konsisten */
 .book-title {
-  font-family: 'Lora', serif;
   font-size: 1rem;
-  font-weight: 700;
-  color: #1c1610;
-  line-height: 1.3;
-  margin-bottom: .15rem;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-
-  min-height: calc(1rem * 1.3 * 2); /* ✅ FIX: kira-kira 2 baris */
+  font-weight: bold;
 }
 
 .book-author {
   font-size: .75rem;
-  color: #9a8878;
-  margin-bottom: .65rem;
+  color: gray;
 }
 
-.book-meta {
+.star-row {
   display: flex;
   align-items: center;
-  gap: .5rem;
-  margin-bottom: .8rem;
+  gap: 2px;
+  margin: 4px 0 8px;
 }
 
-.stars {
-  display: flex;
-  gap: 1px;
-}
-
-.star {
-  font-size: .78rem;
-  color: #e0d0b8;
-}
-
-.star.on { color: #e8a020; }
-
-.rating-val {
-  font-size: .78rem;
-  font-weight: 600;
-  color: #5c4a32;
-}
-
-.avail {
-  font-size: .68rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 100px;
-  margin-left: auto;
-}
-
-.av-y { background: #e8f5ec; color: #2e7d4f; }
-.av-n { background: #fdecea; color: #b71c1c; }
+.star { color: #d4c9b5; font-size: 13px; }
+.star.filled { color: #f59e0b; }
+.rating-count { font-size: 11px; color: #999; margin-left: 3px; }
 
 .btn-detail {
-  width: 100%;
-  height: 38px;
-  border-radius: 8px;
-  border: none;
-  font-family: inherit;
-  font-size: .82rem;
-  font-weight: 700;
-  cursor: pointer;
-  color: #fff;
+  margin-top: auto;
   background: #1c2b3a;
-  transition: all .2s;
-
-  margin-top: auto;         /* ✅ FIX: dorong tombol ke bawah */
+  color: white;
+  border: none;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.btn-detail:hover {
-  background: #2e4a6a;
-  transform: translateY(-1px);
+.bookmark-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: .2s;
+  z-index: 2;
+}
+
+.bookmark-btn:hover {
+  background: #fff;
+  transform: scale(1.1);
+}
+
+.bookmark-btn.saved {
+  background: #fef3c7;
 }
 </style>
 @endsection
@@ -278,85 +188,126 @@ body {
 @section('main-content')
 <div class="container my-4">
 
-  {{-- Search & Filter --}}
   <div class="toolbar">
-    <div class="col-lg-6 w-100" style="max-width:600px">
-      <form action="{{ route('books.index') }}" method="get">
-        <div class="input-group">
+    <div style="max-width:800px; width:100%">
+      <form id="filterForm" action="{{ route('books.index') }}" method="GET">
+        <div style="display:flex; gap:10px; margin-bottom:12px;">
           <input
             type="text"
-            class="form-control"
-            placeholder="Cari buku..."
             name="searchKeyword"
             value="{{ request('searchKeyword') }}"
+            placeholder="Cari buku..."
+            class="form-control"
           >
-          <select class="form-select" name="category">
-            <option value="">Kategori</option>
-            @foreach ($categories as $cat)
-              <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
-                {{ $cat->name }}
-              </option>
-            @endforeach
-          </select>
-          <button class="btn btn-warning" type="submit">Cari</button>
+          <button class="btn-warning">Cari</button>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          @foreach ($categories as $cat)
+            <label>
+              <input
+                type="checkbox"
+                name="categories[]"
+                value="{{ $cat->id }}"
+                class="category-checkbox"
+                hidden
+                {{ in_array($cat->id, request('categories', [])) ? 'checked' : '' }}
+              >
+              <span class="category-pill">{{ $cat->name }}</span>
+            </label>
+          @endforeach
         </div>
       </form>
     </div>
   </div>
 
-  {{-- Book Grid --}}
   <div class="book-grid">
     @forelse ($books as $book)
-      <a href="/books/{{ $book->id }}" class="book-card">
+      @php
+        $avgRating = $book->reviews->avg('rating') ?? 0;
+        $isSaved = auth()->check()
+          ? $book->collections->where('user_id', auth()->id())->isNotEmpty()
+          : false;
+      @endphp
 
-        <div class="book-cover">
-          <img
-            src="{{ $book->cover ? asset('storage/' . $book->cover) : asset('img/bookCoverDefault.png') }}"
-            alt="{{ $book->title }}"
+      <div class="book-card-wrap">
+        <a href="/books/{{ $book->id }}" class="book-card">
+
+          <div class="book-cover">
+            <img src="{{ $book->cover ? asset('storage/' . $book->cover) : asset('img/bookCoverDefault.png') }}">
+            <div class="cover-overlay"></div>
+            <div class="cover-meta">
+              <div class="cover-title">{{ $book->title }}</div>
+            </div>
+          </div>
+
+          <div class="book-body">
+            <div class="book-title">{{ $book->title }}</div>
+            <div class="book-author">{{ $book->author }}</div>
+
+            <div class="star-row">
+              @for($i = 1; $i <= 5; $i++)
+                <span class="star {{ $i <= round($avgRating) ? 'filled' : '' }}">&#9733;</span>
+              @endfor
+              <span class="rating-count">
+                {{ $avgRating > 0 ? number_format($avgRating, 1) : 'Belum ada' }}
+              </span>
+            </div>
+
+            <button class="btn-detail">Detail</button>
+          </div>
+
+        </a>
+
+        @auth
+          <button
+            class="bookmark-btn {{ $isSaved ? 'saved' : '' }}"
+            onclick="toggleKoleksi(this, {{ $book->id }})"
+            title="{{ $isSaved ? 'Hapus dari koleksi' : 'Simpan ke koleksi' }}"
           >
-          <div class="cover-overlay"></div>
+            {{ $isSaved ? '🔖' : '🏷️' }}
+          </button>
+        @endauth
+      </div>
 
-          @if(isset($book->badge))
-            <span class="cover-badge"
-              style="{{ $book->badge === 'hot' ? 'background:#ff5c35;color:#fff' : ($book->badge === 'new' ? 'background:#ffd166;color:#2c2416' : 'background:#7c5cbf;color:#fff') }}">
-              {{ strtoupper($book->badge) }}
-            </span>
-          @endif
-
-          <div class="cover-meta">
-            <div class="cover-cat">{{ $book->category->name ?? '' }}</div>
-            <div class="cover-title">{{ $book->title }}</div>
-          </div>
-        </div>
-
-        <div class="book-body">
-          <div class="book-title">{{ $book->title }}</div>
-          <div class="book-author">{{ $book->author ?? '' }}</div>
-
-              @php
-          $avg = (float) ($book->reviews_avg_rating ?? 0);
-        @endphp
-
-        <div class="book-meta">
-          <div class="stars">
-            @for ($i = 1; $i <= 5; $i++)
-              <span class="star {{ $avg >= $i ? 'on' : '' }}">★</span>
-            @endfor
-          </div>
-
-          <span class="rating-val">
-            {{ rtrim(rtrim(number_format($avg, 1), '0'), '.') }}/5
-          </span>
-        </div>
-
-          <button class="btn-detail" type="button">Lihat Detail</button>
-        </div>
-
-      </a>
     @empty
-      <p class="text-muted mt-3">Tidak ada buku ditemukan.</p>
+      <p>Tidak ada buku</p>
     @endforelse
   </div>
 
 </div>
+@endsection
+
+
+@section('script')
+<script>
+  document.querySelectorAll('.category-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+      document.getElementById('filterForm').submit();
+    });
+  });
+
+  function toggleKoleksi(btn, bookId) {
+    fetch(`/collections/toggle/${bookId}`, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      btn.classList.toggle('saved', data.saved);
+      btn.textContent = data.saved ? '🔖' : '🏷️';
+      btn.title = data.saved ? 'Hapus dari koleksi' : 'Simpan ke koleksi';
+
+      const badge = document.querySelector('.koleksi-badge');
+      if (badge) {
+        badge.textContent = data.count;
+        badge.style.display = data.count > 0 ? 'inline' : 'none';
+      }
+    });
+  }
+</script>
 @endsection

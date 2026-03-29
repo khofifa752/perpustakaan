@@ -18,11 +18,6 @@ class Book extends Model
         'tahun_terbit'
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
     public function categories()
     {
         return $this->belongsToMany(Category::class);

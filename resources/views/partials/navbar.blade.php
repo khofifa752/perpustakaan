@@ -5,7 +5,7 @@
     position: fixed;
     top: 0; left: 0;
     width: 100%;
-    z-index: 99999; 
+    z-index: 99999;
     transition: all .3s ease;
   }
   .custom-navbar.scrolled{
@@ -14,7 +14,6 @@
     box-shadow: 0 4px 20px rgba(0,0,0,.08);
   }
 
-  
   .nav-wrap{
     display: flex;
     justify-content: flex-end;
@@ -22,7 +21,7 @@
   }
 
   .navbar-nav{
-    display: flex;               
+    display: flex;
     flex-direction: row;
     align-items: center;
     background: #fff;
@@ -68,7 +67,6 @@
 
   @media (max-width: 991px){
     .custom-navbar{ background: rgba(240,242,245,.95) !important; }
-
     .navbar-nav{
       flex-direction: column;
       align-items: stretch;
@@ -76,7 +74,6 @@
       padding: .8rem;
       gap: .5rem;
     }
-
     .navbar-nav .nav-link,
     .navbar-nav button.nav-link{
       justify-content: flex-start;
@@ -99,35 +96,38 @@
         <li class="nav-item">
           <a class="nav-link {{ Request::is('books*') ? 'active' : '' }}" href="/books">📚 Koleksi</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link {{ Request::is('booking*') ? 'active' : '' }}" href="/booking">👥 Riwayat</a>
-        </li>
 
-       @auth
-  <li class="nav-item">
-    <a class="nav-link {{ Request::is('collections*') ? 'active' : '' }}" href="{{ route('collections.index') }}">
-      🔖 Koleksi Saya
-      @php $koleksiCount = auth()->user()->collections()->count(); @endphp
-      @if($koleksiCount > 0)
-        <span style="
-          background:#e74c3c;
-          color:#fff;
-          font-size:10px;
-          font-weight:700;
-          border-radius:999px;
-          padding:1px 7px;
-          line-height:16px;
-        ">{{ $koleksiCount }}</span>
-      @endif
-    </a>
-  </li>
-  <li class="nav-item">
-    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
-      @csrf
-      <button type="submit" class="nav-link">🚪 Logout</button>
-    </form>
-  </li>
-@endauth
+        @auth
+          <li class="nav-item">
+            <a class="nav-link {{ Request::is('booking*') ? 'active' : '' }}" href="/booking">👥 Riwayat</a>
+          </li>
+          <li class="nav-item">
+            @php $koleksiCount = auth()->user()->collections()->count(); @endphp
+            <a class="nav-link {{ Request::is('collections*') ? 'active' : '' }}" href="{{ route('collections.index') }}">
+              🔖 Koleksi Saya
+              @if($koleksiCount > 0)
+                <span class="koleksi-badge" style="background:#e74c3c;color:#fff;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;line-height:16px;">{{ $koleksiCount }}</span>
+              @endif
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ Request::is('profile*') ? 'active' : '' }}" href="{{ route('profile.show') }}">
+              @if(auth()->user()->avatar)
+                <img src="{{ asset('storage/'.auth()->user()->avatar) }}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;">
+              @else
+                👤
+              @endif
+              {{ auth()->user()->name }}
+            </a>
+          </li>
+        
+        @endauth
+
+        @guest
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('login') }}">🔑 Login</a>
+          </li>
+        @endguest
 
       </ul>
     </div>

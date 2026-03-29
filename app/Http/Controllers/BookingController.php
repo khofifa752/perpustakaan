@@ -38,7 +38,7 @@ class BookingController extends Controller
             'book_id'    => $validated['book_id'],
             'status'     => 'Diajukan',
             'is_denda'   => false,
-            'expired_at' => now()->addDays(3),
+            'expired_at' => now()->addDays(7),
             'code'       => null,
         ]);
 
@@ -71,4 +71,14 @@ class BookingController extends Controller
 
     return back()->with('success', 'Pengembalian diajukan, menunggu konfirmasi petugas/admin.');
 }
+
+        public function destroy(Booking $booking)
+        {
+            abort_unless($booking->user_id === auth()->id(), 403);
+            abort_unless($booking->status === 'Dikembalikan', 403);
+
+            $booking->delete();
+
+            return back()->with('success', 'Riwayat peminjaman berhasil dihapus.');
+        }
 }

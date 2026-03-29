@@ -197,8 +197,7 @@ body {
             name="searchKeyword"
             value="{{ request('searchKeyword') }}"
             placeholder="Cari buku..."
-            class="form-control"
-          >
+            class="form-control">
           <button class="btn-warning">Cari</button>
         </div>
 

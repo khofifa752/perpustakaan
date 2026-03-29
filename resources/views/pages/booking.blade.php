@@ -183,6 +183,27 @@ body {
   color: #fff;
   box-shadow: none;
 }
+
+.btn-delete {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid #d4c9b5;
+  background: #faf6f0;
+  color: #a89880;
+  font-size: .85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #ef4444;
+}
 </style>
 @endsection
 
@@ -220,7 +241,17 @@ body {
         </div>
         <div class="booking-right">
           <span class="status-badge {{ $cls }}">{{ ucfirst($booking->status) }}</span>
-          <a href="/booking/{{ $booking->id }}" class="btn-view"><i class="bi bi-eye"></i></a>
+          <a href="/booking/{{ $booking->id }}" class="btn-view" title="Lihat Detail"><i class="bi bi-eye"></i></a>
+
+          @if($booking->status === 'Dikembalikan')
+            <form action="/booking/{{ $booking->id }}" method="POST" onsubmit="return confirm('Hapus riwayat ini?')">
+              @csrf
+              @method('DELETE')
+           <button type="submit" class="btn-delete" title="Hapus Riwayat">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          @endif
         </div>
       </div>
     @empty

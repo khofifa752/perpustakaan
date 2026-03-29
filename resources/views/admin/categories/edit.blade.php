@@ -1,45 +1,35 @@
 @extends('admin.layouts.main')
 
 @section('main-content')
-<div class="max-w-3xl mx-auto px-6 py-8">
+<div class="max-w-2xl mx-auto px-6 py-8">
 
-  <h1 class="text-2xl font-semibold text-gray-800 mb-1">
-    Edit Kategori
-  </h1>
-  <p class="text-gray-500 mb-6">
-    Ubah nama kategori
-  </p>
+  <div class="mb-6">
+    <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Edit <em>Kategori</em></h1>
+    <p class="text-sm text-gray-400 mt-1 font-light">Ubah nama kategori</p>
+  </div>
 
-  <div class="bg-white rounded-xl shadow-md">
-    <form action="{{ route('admin.categories.update', $category) }}" method="POST"
-          class="divide-y divide-gray-200">
+  <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden">
+    <form action="{{ route('admin.categories.update', $category) }}" method="POST">
       @csrf
       @method('PUT')
 
       <div class="p-6">
-        <label class="block text-sm font-medium text-gray-600 mb-2">
-          Nama Kategori
-        </label>
-        <input type="text" name="name"
-          value="{{ old('name', $category->name) }}"
-          class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg
-                 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200
-                 outline-none transition">
-
+        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Nama Kategori</label>
+        <input type="text" name="name" value="{{ old('name', $category->name) }}"
+          class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gray-400 focus:bg-white transition">
         @error('name')
-          <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
+          <p class="text-xs text-red-500 mt-2">{{ $message }}</p>
         @enderror
       </div>
 
-      <div class="p-6 flex justify-end gap-3">
+      <div class="p-6 flex justify-end gap-3 bg-gray-50/50 border-t border-gray-100">
         <a href="{{ route('admin.categories.index') }}"
-          class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100">
+           class="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-100 transition">
           Batal
         </a>
-
         <button type="submit"
-          class="px-5 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
-          Update
+           class="px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-700 transition">
+          💾 Update
         </button>
       </div>
 

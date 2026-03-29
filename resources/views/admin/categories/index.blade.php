@@ -4,101 +4,66 @@
 
 <div class="max-w-5xl mx-auto px-6 py-8">
 
-  <!-- Header -->
+  {{-- HEADER --}}
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
     <div>
-      <h1 class="text-2xl font-semibold text-gray-800">Kategori</h1>
-      <p class="text-gray-500 text-sm mt-1">Kelola kategori buku perpustakaan</p>
+      <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Kelola <em>Kategori</em></h1>
+      <p class="text-sm text-gray-400 mt-1 font-light">Kelola kategori buku perpustakaan</p>
     </div>
-
     <a href="{{ route('admin.categories.create') }}"
-       class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 font-semibold text-white shadow-sm hover:bg-indigo-700 transition">
-      <span class="text-lg leading-none">＋</span>
-      Tambah Kategori
+       class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-700 transition shadow-sm">
+      + Tambah Kategori
     </a>
   </div>
 
-
-  <!-- Alert -->
+  {{-- ALERT --}}
   @if(session('success'))
-    <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-800 shadow-sm">
-      {{ session('success') }}
+    <div class="mb-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+      ✅ {{ session('success') }}
     </div>
   @endif
 
-
-  <!-- Card Table -->
-  <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200">
-
-    <!-- Table -->
+  {{-- TABLE --}}
+  <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-100">
     <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-
-        <!-- Head -->
-        <thead class="bg-gray-50">
-          <tr class="text-left text-sm font-semibold text-gray-600">
-            <th class="px-6 py-4">Nama Kategori</th>
-            <th class="px-6 py-4 text-center w-48">Aksi</th>
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-100">
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-widest">Nama Kategori</th>
+            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-400 uppercase tracking-widest w-48">Aksi</th>
           </tr>
         </thead>
-
-        <!-- Body -->
-        <tbody class="divide-y divide-gray-100 bg-white">
-
+        <tbody class="divide-y divide-gray-50">
           @forelse($categories as $category)
-          <tr class="hover:bg-gray-50 transition">
-
-            <!-- Nama -->
-            <td class="px-6 py-4">
-              <div class="font-medium text-gray-800">
-                {{ $category->name }}
-              </div>
-            </td>
-
-            <!-- Aksi -->
+          <tr class="hover:bg-gray-50/60 transition">
+            <td class="px-6 py-4 font-medium text-gray-800">{{ $category->name }}</td>
             <td class="px-6 py-4">
               <div class="flex items-center justify-center gap-2">
-
-                
-               <!-- Edit -->
-              <a href="{{ route('admin.categories.edit', $category->id) }}"
-                class="inline-flex items-center rounded-lg bg-amber-500 px-3 py-2 text-xs font-semibold text-white hover:bg-amber-600 transition shadow-sm">
-                Edit
-              </a>
-
-              <!-- Hapus -->
-              <form action="{{ route('admin.categories.destroy', $category->id) }}"
-                    method="POST"
-                    onsubmit="return confirm('Yakin hapus kategori ini?')">
-
-                @csrf
-                @method('DELETE')
-
-                <button type="submit"
-                        class="inline-flex items-center rounded-lg bg-rose-500 px-3 py-2 text-xs font-semibold text-white hover:bg-rose-600 transition shadow-sm">
-                  Hapus
-                </button>
-                
+                <a href="{{ route('admin.categories.edit', $category->id) }}"
+                   class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-300 transition">
+                  Edit
+                </a>
+                <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                      method="POST"
+                      onsubmit="return confirm('Yakin hapus kategori ini?')">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit"
+                          class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition">
+                    Hapus
+                  </button>
                 </form>
-
               </div>
             </td>
-
           </tr>
-
           @empty
           <tr>
-            <td colspan="2" class="px-6 py-12 text-center text-gray-500">
-              Belum ada kategori.
-            </td>
+            <td colspan="2" class="px-6 py-10 text-center text-gray-400 font-light">Belum ada kategori.</td>
           </tr>
           @endforelse
-
         </tbody>
-
       </table>
     </div>
-
   </div>
 
 </div>

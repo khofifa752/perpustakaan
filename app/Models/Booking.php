@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Booking extends Model
 {
-public const ACTIVE_STATUSES = ['Diajukan', 'Disetujui', 'Dipinjam']; 
+public const ACTIVE_STATUSES = ['Diajukan', 'Disetujui', 'Dipinjam','menunggu pengembalian']; 
 
 public static function userHasActiveLoan(int $userId): bool
 {

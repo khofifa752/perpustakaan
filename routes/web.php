@@ -11,10 +11,12 @@ use App\Http\Controllers\AdminBooksController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PeminjamanController;
 use App\Http\Controllers\Admin\PengembalianController;
+use App\Http\Controllers\Admin\RiwayatController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PetugasController;
 use App\Http\Controllers\Admin\ReviewAdminController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('partials.index');
@@ -28,7 +30,7 @@ Route::resource('books', BookController::class);
 |--------------------------------------------------------------------------
 */
 Route::resource('booking', BookingController::class)
-    ->only(['index', 'store', 'show'])
+    ->only(['index', 'store', 'show','destroy'])
     ->middleware('auth');
 
 
@@ -40,8 +42,17 @@ Route::patch('/booking/{booking}/ajukan-pengembalian', [BookingController::class
 Route::post('/booking/{booking}/review', [ReviewController::class, 'store'])
     ->middleware('auth')
     ->name('booking.review.store');
-    
-Route::resource('collections', CollectionController::class);
+
+//koleksi
+  Route::post('/collections/toggle/{book}', [CollectionController::class, 'toggle'])->name('collections.toggle');
+  Route::get('/collections', [CollectionController::class, 'index'])->name('collections.index');
+
+//profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
 
 Route::get('/dashboard', function () {
     $role = auth()->user()->role;
@@ -87,6 +98,10 @@ Route::prefix('dashboard')
 
         Route::patch('/pengembalian/{booking}/konfirmasi', [PengembalianController::class, 'kembalikan'])
             ->name('pengembalian.konfirmasi');
+
+        // RIWAYAT PEMINJAMAN
+        Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat.index');
+        Route::get('/riwayat/laporan/download', [RiwayatController::class, 'downloadPdf'])->name('riwayat.laporan.download');
 
         // USERS
         Route::get('/users', [UserController::class, 'index'])->name('users.index');

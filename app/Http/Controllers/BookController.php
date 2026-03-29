@@ -9,97 +9,56 @@ use App\Models\Booking;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-   public function index(Request $request)
-{
-    $booksQuery = Book::with('category')
-        ->withAvg('reviews', 'rating');
-
-    // SEARCH
-    if ($request->filled('searchKeyword')) {
-        $keyword = $request->searchKeyword;
-
-        $booksQuery->where(function ($q) use ($keyword) {
-            $q->where('title', 'like', "%{$keyword}%")
-              ->orWhere('author', 'like', "%{$keyword}%");
-        });
-    }
-
-    
-    if ($request->filled('categories')) {
-        $booksQuery->whereIn('category_id', $request->categories);
-    }
-
-    return view('pages.books', [
-        'books' => $booksQuery->get(),
-        'categories' => Category::all(),
-    ]);
-}
-    /**
-     * Show the form for creating a new resource.
-     */ 
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $booksQuery = Book::with(['categories', 'reviews', 'collections'])
+            ->withAvg('reviews', 'rating');
+
+        if ($request->filled('searchKeyword')) {
+            $keyword = $request->searchKeyword;
+            $booksQuery->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', "%{$keyword}%")
+                  ->orWhere('author', 'like', "%{$keyword}%");
+            });
+        }
+
+            if ($request->filled('categories')) {
+            foreach ($request->categories as $catId) {
+                $booksQuery->whereHas('categories', function($q) use ($catId) {
+                    $q->where('categories.id', $catId);
+                });
+            }
+        }
+
+        return view('pages.books', [
+            'books'      => $booksQuery->get(),
+            'categories' => Category::all(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Book $book)
     {
-        $book->load(['reviews.user','category'])
+        $book->load(['reviews.user', 'categories'])
             ->loadAvg('reviews', 'rating')
             ->loadCount('reviews');
 
         $canBorrow = true;
 
         if (auth()->check()) {
-            $canBorrow = !\App\Models\Booking::where('user_id', auth()->id())
-                ->whereIn('status', ['Diajukan','Disetujui'])
-                ->exists();
+            $canBorrow = !Booking::userHasActiveLoan(auth()->id());
         } else {
-            $canBorrow = false; 
+            $canBorrow = false;
         }
 
         return view('pages.booksDetail', [
-            'book' => $book,
+            'book'      => $book,
             'canBorrow' => $canBorrow,
         ]);
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function create() {}
+    public function store(Request $request) {}
+    public function edit(string $id) {}
+    public function update(Request $request, string $id) {}
+    public function destroy(string $id) {}
 }

@@ -7,8 +7,7 @@
 <div class="w-full">
 
   <div class="mb-6">
-    <h1 class="text-2xl font-semibold text-gray-900" style="font-family:'Playfair Display',serif;">
-      Riwayat <em>Peminjaman</em>
+     <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Riwayat Peminjaman </em></h1>
     </h1>
     <p class="text-sm text-gray-400 mt-1 font-light">Peminjaman yang telah selesai atau ditolak</p>
   </div>

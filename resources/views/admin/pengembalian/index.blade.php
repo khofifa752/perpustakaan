@@ -5,7 +5,7 @@
 
   {{-- HEADER --}}
   <div class="mb-6">
-    <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Kelola <em>Pengembalian</em></h1>
+    <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Kelola Pengembalian</h1>
     <p class="text-sm text-gray-400 mt-1 font-light">Konfirmasi pengembalian buku dari peminjam</p>
   </div>
 

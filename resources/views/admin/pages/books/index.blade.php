@@ -5,7 +5,7 @@
 {{-- HEADER --}}
 <div class="flex items-center justify-between mb-6">
   <div>
-    <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Buku <em>Perpustakaan</em></h1>
+    <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Buku Perpustakaan</h1>
     <p class="text-sm text-gray-400 mt-1 font-light">Kelola data buku perpustakaan</p>
   </div>
   <div class="flex gap-2">

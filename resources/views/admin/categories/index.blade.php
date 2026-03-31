@@ -7,7 +7,7 @@
   {{-- HEADER --}}
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
     <div>
-      <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Kelola <em>Kategori</em></h1>
+      <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Kelola Kategori</h1>
       <p class="text-sm text-gray-400 mt-1 font-light">Kelola kategori buku perpustakaan</p>
     </div>
     <a href="{{ route('admin.categories.create') }}"

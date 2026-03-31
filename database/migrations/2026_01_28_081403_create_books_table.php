@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('cover')->nullable();
             $table->string('author');
             $table->string('publisher');
-            $table->string('description');
+            $table->longText('description');
             $table->string('code')->nullable();
             $table->string('stock');
             $table->string('category_id');

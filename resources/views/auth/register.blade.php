@@ -260,18 +260,11 @@ input::placeholder { color: #C8C8C8; font-weight: 300; }
     <form method="POST" action="{{ route('register') }}">
       @csrf
 
-      <div class="row-2">
-        <div class="field">
-          <label for="first_name">Nama Depan</label>
-          <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" placeholder="Budi">
-          @error('first_name') <span class="error">{{ $message }}</span> @enderror
-        </div>
-        <div class="field">
-          <label for="last_name">Nama Belakang</label>
-          <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Santoso">
-          @error('last_name') <span class="error">{{ $message }}</span> @enderror
-        </div>
-      </div>
+      <div class="field">
+  <label for="name">Nama Lengkap</label>
+  <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="Budi Santoso">
+  @error('name') <span class="error">{{ $message }}</span> @enderror
+</div>
 
       <div class="field">
         <label for="email">Email</label>

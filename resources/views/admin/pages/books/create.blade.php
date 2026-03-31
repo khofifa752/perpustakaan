@@ -90,10 +90,15 @@
 
         {{-- DESKRIPSI --}}
         <div class="p-6">
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Deskripsi</label>
-          <textarea name="description" rows="4" placeholder="Tulis deskripsi buku..."
-            class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gray-400 focus:bg-white transition resize-none">{{ old('description') }}</textarea>
-        </div>
+  <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">
+    Deskripsi
+  </label>
+
+  <textarea name="description" rows="6" placeholder="Tulis deskripsi buku..."
+    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gray-400 focus:bg-white transition resize-y">
+    {{ old('description') }}
+  </textarea>
+</div>
 
         {{-- ACTION --}}
         <div class="p-6 flex justify-end gap-3 bg-gray-50/50">

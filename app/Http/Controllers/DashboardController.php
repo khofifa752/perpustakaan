@@ -13,6 +13,7 @@ class DashboardController extends Controller
     public function index()
     {
         $totalBuku       = Book::count();
+        $totalStock      = Book::sum('stock');
         $totalUser       = User::where('role', 'peminjam')->count();
         $peminjamAktif   = Booking::whereIn('status', ['Diajukan', 'Disetujui', 'Dipinjam'])->count();
         $bukuTerlambat   = Booking::where('status', 'Dipinjam')
@@ -27,6 +28,7 @@ class DashboardController extends Controller
 
         return view('admin.index', compact(
             'totalBuku',
+            'totalStock',
             'totalUser',
             'peminjamAktif',
             'bukuTerlambat',

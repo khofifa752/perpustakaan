@@ -1,15 +1,4 @@
-{{-- 
-  Ganti bagian index() di PeminjamanController.php menjadi:
-  
-  public function index()
-  {
-      $bookings = Booking::with(['book','user'])
-          ->whereIn('status', ['Diajukan', 'Disetujui', 'Dipinjam', 'Menunggu Pengembalian'])
-          ->latest()
-          ->get();
-      return view('admin.peminjaman.index', compact('bookings'));
-  }
---}}
+
 @extends('admin.layouts.main')
 
 @section('page-title', 'Peminjaman')
@@ -19,8 +8,7 @@
 <div class="w-full">
 
   <div class="mb-6">
-    <h1 class="text-2xl font-semibold text-gray-900" style="font-family:'Playfair Display',serif;">
-      Peminjaman <em>Aktif</em>
+     <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Kelola Peminjaman</h1>
     </h1>
     <p class="text-sm text-gray-400 mt-1 font-light">Kelola peminjaman yang sedang berjalan</p>
   </div>

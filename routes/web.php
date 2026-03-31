@@ -144,7 +144,9 @@ Route::prefix('admin')
     ->as('admin.')
     ->middleware(['auth', 'role:admin'])
     ->group(function () {
-        Route::resource('petugas', PetugasController::class)->except(['show']);
+Route::resource('petugas', PetugasController::class, [
+    'parameters' => ['petugas' => 'petugas']
+])->except(['show']);
     });
 
 require __DIR__.'/auth.php';

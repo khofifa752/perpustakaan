@@ -4,149 +4,96 @@
 
 <div class="flex items-center justify-between mb-6">
     <div>
-        <h1 class="text-2xl font-bold text-gray-800">Kelola User</h1>
-        <p class="text-sm text-gray-500">Kelola data akun peminjam perpustakaan</p>
+        <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Kelola Pengguna</h1>
+        <p class="text-sm text-slate-500">Kelola data akun peminjam perpustakaan</p>
     </div>
 
-    <div class="flex gap-2">
-        <div style="display:flex; gap:10px;">
-            <button
-                type="button"
-                onclick="openUserLaporanModal()"
-                style="background:#16a34a; color:white; padding:12px 18px; border:none; border-radius:14px; font-weight:600; cursor:pointer;"
-            >
-                Generate Laporan
-            </button>
-        </div>
-    </div>
+    <button
+        type="button"
+        onclick="openUserLaporanModal()"
+        class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800 transition"
+    >
+        Generate Laporan
+    </button>
 </div>
 
-<div id="userLaporanModal" style="
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    z-index:9999;
-    justify-content:center;
-    align-items:center;
-    padding:24px;
-">
-    <div style="
-        width:100%;
-        max-width:950px;
-        max-height:90vh;
-        overflow:auto;
-        background:#f3f4f6;
-        border-radius:20px;
-        box-shadow:0 25px 60px rgba(0,0,0,0.25);
-        padding:20px;
-    ">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+<div id="userLaporanModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-6">
+    <div class="w-full max-w-3xl rounded-2xl bg-white shadow-xl">
+        <div class="flex items-center justify-between border-b px-6 py-4">
             <div>
-                <h2 style="margin:0; font-size:24px; font-weight:700;">Preview Laporan User</h2>
-                <p style="margin:4px 0 0; color:#6b7280;">Tampilan laporan seperti file dokumen</p>
+                <h2 class="text-lg font-semibold text-slate-800">Preview Laporan User</h2>
+                <p class="text-sm text-slate-500">Tampilan sebelum download / print</p>
             </div>
 
             <button
                 type="button"
                 onclick="closeUserLaporanModal()"
-                style="
-                    background:#ef4444;
-                    color:white;
-                    border:none;
-                    border-radius:12px;
-                    padding:10px 16px;
-                    font-weight:600;
-                    cursor:pointer;
-                "
+                class="text-slate-500 hover:text-red-500 text-sm"
             >
-                Tutup
+                ✕
             </button>
         </div>
 
-        <div id="userPrintArea" style="
-            background:white;
-            width:100%;
-            max-width:800px;
-            margin:0 auto;
-            min-height:1000px;
-            padding:40px;
-            border-radius:8px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.08);
-        ">
-            <div style="text-align:center; margin-bottom:20px;">
-                <div style="font-size:26px; font-weight:700;">Laporan User Perpustakaan</div>
-                <div style="margin-top:6px; color:#6b7280;">Daftar akun peminjam perpustakaan</div>
-            </div>
+        <div class="p-6 max-h-[70vh] overflow-auto">
+            <div id="userPrintArea" class="bg-white text-sm">
+                <div class="text-center mb-6">
+                    <h2 class="text-lg font-semibold">Laporan User</h2>
+                    <p class="text-slate-500 text-sm">Perpustakaan</p>
+                </div>
 
-            <div style="margin-bottom:14px; font-size:14px;">
-                <strong>Tanggal Cetak:</strong> {{ now()->timezone('Asia/Jakarta')->format('d-m-Y H:i') }} WIB
-            </div>
+                <p class="mb-4 text-xs text-slate-500">
+                    Tanggal: {{ now()->timezone('Asia/Jakarta')->format('d-m-Y H:i') }} WIB
+                </p>
 
-            <table width="100%" cellspacing="0" cellpadding="10" style="border-collapse:collapse; font-size:14px;">
-                <thead>
-                    <tr style="background:#f3f4f6;">
-                        <th style="border:1px solid #d1d5db;" align="left">No</th>
-                        <th style="border:1px solid #d1d5db;" align="left">Nama</th>
-                        <th style="border:1px solid #d1d5db;" align="left">Email</th>
-                        <th style="border:1px solid #d1d5db;" align="left">Total Pinjam</th>
-                        <th style="border:1px solid #d1d5db;" align="left">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($users as $index => $user)
+                <table class="w-full border border-slate-300 text-sm">
+                    <thead class="bg-slate-100 text-slate-700">
                         <tr>
-                            <td style="border:1px solid #d1d5db;">{{ $index + 1 }}</td>
-                            <td style="border:1px solid #d1d5db;">{{ $user->name }}</td>
-                            <td style="border:1px solid #d1d5db;">{{ $user->email }}</td>
-                            <td style="border:1px solid #d1d5db;">{{ $user->bookings_count ?? 0 }}</td>
-                            <td style="border:1px solid #d1d5db;">
-                                {{ strtolower(trim($user->status)) == 'aktif' ? 'Aktif' : 'Nonaktif' }}
-                            </td>
+                            <th class="border border-slate-300 px-3 py-2 text-left">No</th>
+                            <th class="border border-slate-300 px-3 py-2 text-left">Nama</th>
+                            <th class="border border-slate-300 px-3 py-2 text-left">Email</th>
+                            <th class="border border-slate-300 px-3 py-2 text-left">Total</th>
+                            <th class="border border-slate-300 px-3 py-2 text-left">Status</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" style="border:1px solid #d1d5db; text-align:center;">
-                                Tidak ada data user
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse($users as $i => $user)
+                            <tr>
+                                <td class="border border-slate-300 px-3 py-2">{{ $i + 1 }}</td>
+                                <td class="border border-slate-300 px-3 py-2">{{ $user->name }}</td>
+                                <td class="border border-slate-300 px-3 py-2">{{ $user->email }}</td>
+                                <td class="border border-slate-300 px-3 py-2">{{ $user->bookings_count ?? 0 }}</td>
+                                <td class="border border-slate-300 px-3 py-2">
+                                    {{ strtolower(trim($user->status)) == 'aktif' ? 'Aktif' : 'Nonaktif' }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="border border-slate-300 px-3 py-4 text-center">
+                                    Tidak ada data
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
 
-            <div style="margin-top:16px; font-size:14px;">
-                <strong>Total User:</strong> {{ $users->count() }}
+                <p class="mt-4 text-sm">
+                    <strong>Total:</strong> {{ $users->count() }} user
+                </p>
             </div>
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:18px;">
+        <div class="flex justify-end gap-2 border-t bg-slate-50 px-6 py-4">
             <button
                 type="button"
                 onclick="printUserLaporan()"
-                style="
-                    background:#f59e0b;
-                    color:white;
-                    border:none;
-                    border-radius:12px;
-                    padding:12px 18px;
-                    font-weight:600;
-                    cursor:pointer;
-                "
+                class="rounded-xl bg-amber-500 px-4 py-2 text-sm text-white hover:bg-amber-600"
             >
                 Print
             </button>
 
             <a
                 href="{{ route('admin.users.laporan.pdf', ['q' => request('q')]) }}"
-                style="
-                    background:#2563eb;
-                    color:white;
-                    text-decoration:none;
-                    border-radius:12px;
-                    padding:12px 18px;
-                    font-weight:600;
-                    display:inline-block;
-                "
+                class="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-800"
             >
                 Download PDF
             </a>
@@ -160,84 +107,61 @@
     </div>
 @endif
 
-<div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-    <div class="relative w-full sm:max-w-md">
-        <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-            🔎
-        </span>
+<div class="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
+    <input
+        id="tableSearch"
+        type="text"
+        placeholder="Cari nama / email..."
+        class="w-full sm:max-w-md rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-slate-800 focus:outline-none focus:ring-1 focus:ring-slate-800"
+    />
 
-        <input
-            id="tableSearch"
-            type="text"
-            placeholder="Cari nama / email..."
-            class="w-full rounded-xl border border-gray-300 bg-white py-2.5 pl-10 pr-3 text-sm focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"
-        />
-    </div>
-
-    <div class="text-sm text-gray-500">
-        Total:
-        <span class="font-semibold text-gray-800">
-            {{ $users->count() }}
-        </span> user
-    </div>
+    <span class="text-sm text-slate-500">
+        Total <span class="font-semibold text-slate-800">{{ $users->count() }}</span> user
+    </span>
 </div>
 
-<div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200">
+<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
     <div class="overflow-x-auto">
         <table class="min-w-full text-sm">
-            <thead class="bg-gray-50 text-gray-600 font-semibold">
+            <thead class="bg-slate-50 text-slate-600 font-medium">
                 <tr>
                     <th class="px-6 py-4 text-left">Nama</th>
                     <th class="px-6 py-4 text-left">Email</th>
-                    <th class="px-6 py-4 text-center">Total Pinjam</th>
+                    <th class="px-6 py-4 text-center">Total</th>
                     <th class="px-6 py-4 text-center">Status</th>
                     <th class="px-6 py-4 text-center">Aksi</th>
                 </tr>
             </thead>
 
-            <tbody id="usersTbody" class="divide-y divide-gray-100">
+            <tbody id="usersTbody" class="divide-y divide-slate-100">
                 @forelse($users as $user)
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="px-6 py-4 font-semibold text-gray-800">
-                            {{ $user->name }}
-                        </td>
-
-                        <td class="px-6 py-4 text-gray-600">
-                            {{ $user->email }}
-                        </td>
-
+                    <tr class="hover:bg-slate-50">
+                        <td class="px-6 py-4 font-medium text-slate-800">{{ $user->name }}</td>
+                        <td class="px-6 py-4 text-slate-600">{{ $user->email }}</td>
                         <td class="px-6 py-4 text-center">
-                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs">
                                 {{ $user->bookings_count ?? 0 }}
                             </span>
                         </td>
-
                         <td class="px-6 py-4 text-center">
                             @if(strtolower(trim($user->status)) == 'aktif')
-                                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">
-                                    Aktif
-                                </span>
+                                <span class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-700">Aktif</span>
                             @else
-                                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">
-                                    Nonaktif
-                                </span>
+                                <span class="rounded-full bg-red-100 px-3 py-1 text-xs text-red-700">Nonaktif</span>
                             @endif
                         </td>
-
-                        <td class="px-6 py-4">
-                            <div class="flex justify-center gap-2">
-                                <a
-                                    href="{{ route('admin.users.show', $user) }}"
-                                    class="inline-flex items-center rounded-lg bg-blue-500 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-600 transition shadow-sm"
-                                >
-                                    Detail
-                                </a>
-                            </div>
+                        <td class="px-6 py-4 text-center">
+                            <a
+                                href="{{ route('admin.users.show', $user) }}"
+                                class="rounded-lg bg-slate-900 px-3 py-2 text-xs text-white hover:bg-slate-800"
+                            >
+                                Detail
+                            </a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                        <td colspan="5" class="py-10 text-center text-slate-500">
                             Belum ada data user
                         </td>
                     </tr>
@@ -253,6 +177,7 @@
 <script>
 const searchInput = document.getElementById('tableSearch');
 const tbody = document.getElementById('usersTbody');
+const modal = document.getElementById('userLaporanModal');
 
 if (searchInput && tbody) {
     const rows = Array.from(tbody.querySelectorAll('tr'));
@@ -267,15 +192,20 @@ if (searchInput && tbody) {
 }
 
 function openUserLaporanModal() {
-    document.getElementById('userLaporanModal').style.display = 'flex';
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
 }
 
 function closeUserLaporanModal() {
-    document.getElementById('userLaporanModal').style.display = 'none';
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
 }
 
-window.addEventListener('click', function (e) {
-    const modal = document.getElementById('userLaporanModal');
+window.addEventListener('click', function(e) {
     if (e.target === modal) {
         closeUserLaporanModal();
     }
@@ -311,9 +241,7 @@ function printUserLaporan() {
                 }
             </style>
         </head>
-        <body>
-            ${content}
-        </body>
+        <body>${content}</body>
         </html>
     `);
 

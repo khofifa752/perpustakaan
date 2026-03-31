@@ -9,6 +9,17 @@ use App\Models\Booking;
 
 class BookController extends Controller
 {
+    public function welcome()
+{
+    $totalBuku     = Book::count();
+    $totalKategori = Category::count();
+    $totalPeminjam = \App\Models\User::where('role', 'peminjam')->count();
+    $categories    = Category::all();
+    $featuredBooks = Book::with('categories')->latest()->take(5)->get();
+
+    return view('partials.index', compact('totalBuku', 'totalKategori', 'totalPeminjam', 'categories', 'featuredBooks'));
+}
+
     public function index(Request $request)
     {
         $booksQuery = Book::with(['categories', 'reviews', 'collections'])
@@ -22,7 +33,7 @@ class BookController extends Controller
             });
         }
 
-            if ($request->filled('categories')) {
+        if ($request->filled('categories')) {
             foreach ($request->categories as $catId) {
                 $booksQuery->whereHas('categories', function($q) use ($catId) {
                     $q->where('categories.id', $catId);

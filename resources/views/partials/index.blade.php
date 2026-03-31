@@ -25,7 +25,6 @@
   min-height: 100vh;
 }
 
-/* ══ HERO ══ */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -50,7 +49,6 @@
 .blob-2 { width:340px; height:340px; background:var(--blue);  top:40px;   right:-80px; }
 .blob-3 { width:300px; height:300px; background:var(--green); bottom:-40px; left:35%; }
 
-/* eyebrow */
 .eyebrow {
   font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase;
   font-weight: 500; color: var(--sub);
@@ -58,7 +56,6 @@
   opacity: 0; animation: up .5s .08s forwards;
 }
 
-/* heading */
 .heading {
   font-family: 'Playfair Display', serif;
   font-size: clamp(50px, 7vw, 98px);
@@ -71,9 +68,7 @@
   opacity: 0; animation: up .65s .2s forwards;
 }
 .heading em { font-style: italic; }
-.heading .hl {
-  position: relative; display: inline-block;
-}
+.heading .hl { position: relative; display: inline-block; }
 .heading .hl::after {
   content: '';
   position: absolute; left: 0; bottom: 6px;
@@ -82,7 +77,6 @@
   z-index: -1; border-radius: 2px;
 }
 
-/* search */
 .search-wrap {
   width: 100%; max-width: 480px;
   position: relative; z-index: 1;
@@ -118,7 +112,6 @@
 }
 .search-btn:hover { opacity: .75; }
 
-/* tags */
 .tags {
   display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
   justify-content: center;
@@ -131,10 +124,10 @@
   background: none; border: 1.5px solid var(--line);
   border-radius: 40px; padding: 5px 14px; cursor: pointer;
   transition: all .18s; font-family: 'Inter', sans-serif;
+  text-decoration: none;
 }
 .tg:hover { border-color: var(--ink); color: var(--ink); }
 
-/* ── FAN ── */
 .fan-section {
   position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center;
@@ -186,7 +179,6 @@
 .k4 { background:linear-gradient(150deg,#6B4B58,#382432); }
 .k5 { background:linear-gradient(150deg,#6B5C4B,#382E24); }
 
-/* ── STATS ── */
 .stats-row {
   display: flex; align-items: center;
   margin-top: 56px;
@@ -204,7 +196,6 @@
 .sn { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; color:var(--ink); line-height:1; }
 .sl { font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--sub); }
 
-/* ── HOW ── */
 .how {
   padding: 80px 5vw 90px;
   background: var(--bg);
@@ -276,36 +267,47 @@
       Pinjam buku,<br><em><span class="hl">tanpa repot</span></em>
     </h1>
 
+    {{-- SEARCH --}}
     <div class="search-wrap">
-      <div class="search-bar">
-        <input type="text" placeholder="Judul, penulis, atau genre...">
-        <button class="search-btn">Cari →</button>
-      </div>
+      <form action="{{ route('books.index') }}" method="GET" style="width:100%">
+        <div class="search-bar">
+          <input type="text" name="searchKeyword" placeholder="Judul, penulis, atau genre...">
+          <button type="submit" class="search-btn">Cari →</button>
+        </div>
+      </form>
     </div>
 
+    {{-- TAGS KATEGORI --}}
     <div class="tags">
-      <button class="tg">Fiksi</button>
-      <button class="tg">Sastra</button>
-      <button class="tg">Sains</button>
-      <button class="tg">Sejarah</button>
-      <button class="tg">Filsafat</button>
+      @foreach($categories as $cat)
+        <a href="{{ route('books.index', ['categories[]' => $cat->id]) }}" class="tg">
+          {{ $cat->name }}
+        </a>
+      @endforeach
     </div>
 
     <div class="fan-section">
       <div class="fan-label">Tersedia untuk dipinjam</div>
       <div class="fan">
-        <div class="bk"><div class="bf k1"><span class="bg">Sastra</span><div><div class="bt">Bumi Manusia</div><div class="ba">Pramoedya A. Toer</div></div></div></div>
-        <div class="bk"><div class="bf k2"><span class="bg">Filosofi</span><div><div class="bt">Dunia Sophie</div><div class="ba">Jostein Gaarder</div></div></div></div>
-        <div class="bk"><div class="bf k3"><span class="bg">Fiksi</span><div><div class="bt">Laskar Pelangi</div><div class="ba">Andrea Hirata</div></div></div></div>
-        <div class="bk"><div class="bf k4"><span class="bg">Sejarah</span><div><div class="bt">Pulau Run</div><div class="ba">Giles Milton</div></div></div></div>
-        <div class="bk"><div class="bf k5"><span class="bg">Sains</span><div><div class="bt">Sapiens</div><div class="ba">Yuval N. Harari</div></div></div></div>
-      </div>
+      @foreach($featuredBooks as $i => $fb)
+        <a href="/books/{{ $fb->id }}" class="bk" style="text-decoration:none;">
+          <div class="bf k{{ $i + 1 }}">
+            <span class="bg">{{ $fb->categories->first()->name ?? 'Buku' }}</span>
+            <div>
+              <div class="bt">{{ $fb->title }}</div>
+              <div class="ba">{{ $fb->author }}</div>
+            </div>
+          </div>
+        </a>
+      @endforeach
+    </div>
     </div>
 
+    {{-- STATS REAL --}}
     <div class="stats-row">
-      <div class="st"><div class="sn">12K+</div><div class="sl">Koleksi</div></div>
-      <div class="st"><div class="sn">48</div><div class="sl">Genre</div></div>
-      <div class="st"><div class="sn">6.2K</div><div class="sl">Peminjam</div></div>
+      <div class="st"><div class="sn">{{ $totalBuku }}</div><div class="sl">Koleksi</div></div>
+      <div class="st"><div class="sn">{{ $totalKategori }}</div><div class="sl">Genre</div></div>
+      <div class="st"><div class="sn">{{ $totalPeminjam }}</div><div class="sl">Peminjam</div></div>
     </div>
   </section>
 
@@ -325,7 +327,7 @@
       <div class="step">
         <div class="step-ico ic-g">↩️</div>
         <div class="step-n">03 — Kembalikan</div>
-        <div class="step-t">Kami ingatkan sebelum jatuh tempo</div>
+        <div class="step-t">Kembalikan buku tepat waktu</div>
       </div>
     </div>
   </section>

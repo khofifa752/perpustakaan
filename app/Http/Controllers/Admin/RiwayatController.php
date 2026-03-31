@@ -54,4 +54,11 @@ class RiwayatController extends Controller
 
         return $pdf->download('laporan-riwayat-peminjaman.pdf');
     }
+
+        public function destroy(Booking $booking)
+    {
+        abort_unless(in_array($booking->status, ['Dikembalikan', 'Ditolak']), 403);
+        $booking->delete();
+        return back()->with('success', 'Riwayat berhasil dihapus.');
+    }
 }

@@ -3,207 +3,72 @@
 @section('style')
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: #f0ebe2;
-}
-
-.page-wrapper {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
-}
-
-.page-title {
-  font-family: 'Lora', serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1c1610;
-  margin-bottom: 1.75rem;
-}
-
+body { font-family: 'DM Sans', sans-serif; background: #f0ebe2; }
+.page-wrapper { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.page-title { font-family: 'Lora', serif; font-size: 1.5rem; font-weight: 600; color: #1c1610; margin-bottom: 1.75rem; }
 .search-bar input {
-  height: 42px;
-  padding: 0 1rem;
-  border-radius: 10px;
-  border: 1.5px solid #d4c9b5;
-  background: #fff;
-  font-family: inherit;
-  font-size: .88rem;
-  color: #2c2416;
-  outline: none;
-  width: 280px;
-  margin-bottom: 1.75rem;
+  height: 42px; padding: 0 1rem; border-radius: 10px;
+  border: 1.5px solid #d4c9b5; background: #fff;
+  font-family: inherit; font-size: .88rem; color: #2c2416;
+  outline: none; width: 280px; margin-bottom: 1.75rem;
   box-shadow: 0 4px 18px rgba(44,36,22,.14);
   transition: box-shadow .2s, border .2s;
 }
-
-.search-bar input:focus {
-  border-color: #8a6d45;
-  box-shadow: 0 6px 24px rgba(44,36,22,.2);
-}
+.search-bar input:focus { border-color: #8a6d45; box-shadow: 0 6px 24px rgba(44,36,22,.2); }
 .search-bar input::placeholder { color: #b0987a; }
-
-.booking-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
+.booking-list { display: flex; flex-direction: column; gap: 1rem; }
 .booking-card {
-  background: #d7dbdbe1;
-  border-radius: 16px;
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  box-shadow: 0 6px 28px rgba(246, 245, 242, 0.14);
+  background: #d7dbdbe1; border-radius: 16px; padding: 1.25rem 1.5rem;
+  display: flex; align-items: center; gap: 1.25rem;
+  box-shadow: 0 6px 28px rgba(246,245,242,.14);
   transition: transform .25s, box-shadow .25s;
   animation: rise .4s ease both;
 }
-
-.booking-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 44px rgba(44, 36, 22, 0.81);
-}
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
+.booking-card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(44,36,22,.81); }
+@keyframes rise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 .booking-card:nth-child(2) { animation-delay: .07s; }
 .booking-card:nth-child(3) { animation-delay: .14s; }
 .booking-card:nth-child(4) { animation-delay: .21s; }
 .booking-card:nth-child(5) { animation-delay: .28s; }
-
 .booking-info { flex: 1; min-width: 0; }
-
-.booking-title {
-  font-family: 'Lora', serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #1c1610;
-  margin-bottom: .2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.booking-sub {
-  font-size: .76rem;
-  color: #a89880;
-  display: flex;
-  gap: .8rem;
-  flex-wrap: wrap;
-}
-
-.booking-right {
-  display: flex;
-  align-items: center;
-  gap: .65rem;
-  flex-shrink: 0;
-}
-
-.status-badge {
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  padding: 5px 12px;
-  border-radius: 100px;
-}
-
-.s-diajukan    { color: #b45309; background: #fef3c7; }
-.s-disetujui   { color: #166534; background: #dcfce7; }
-.s-ditolak     { color: #991b1b; background: #fee2e2; }
-.s-dikembalikan{ color: #44403c; background: #f5f5f4; }
-.s-default     { color: #3730a3; background: #e0e7ff; }
-
+.booking-title { font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600; color: #1c1610; margin-bottom: .2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.booking-sub { font-size: .76rem; color: #a89880; display: flex; gap: .8rem; flex-wrap: wrap; }
+.booking-right { display: flex; align-items: center; gap: .65rem; flex-shrink: 0; }
+.status-badge { font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; }
+.s-diajukan     { color: #b45309; background: #fef3c7; }
+.s-disetujui    { color: #166534; background: #dcfce7; }
+.s-ditolak      { color: #991b1b; background: #fee2e2; }
+.s-dikembalikan { color: #44403c; background: #f5f5f4; }
+.s-default      { color: #3730a3; background: #e0e7ff; }
 .btn-view {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1.5px solid #e8e0d5;
-  background: #faf6f0;
-  color: #5c4a32;
-  font-size: .85rem;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1.5px solid #e8e0d5; background: #faf6f0;
+  color: #5c4a32; font-size: .85rem; text-decoration: none;
+  display: flex; align-items: center; justify-content: center;
   transition: all .2s;
 }
-
-.btn-view:hover {
-  background: #1c1610;
-  border-color: #1c1610;
-  color: #fff;
+.btn-view:hover { background: #1c1610; border-color: #1c1610; color: #fff; }
+.btn-delete {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1.5px solid #d4c9b5; background: #faf6f0;
+  color: #a89880; font-size: .85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; cursor: pointer;
 }
-
-.empty-state {
-  text-align: center;
-  padding: 4rem 0;
-  color: #b8a88a;
-  font-size: .95rem;
-}
-
-.pagination-wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1.75rem;
-  flex-wrap: wrap;
-  gap: .75rem;
-}
-
+.btn-delete:hover { background: #fee2e2; border-color: #fecaca; color: #ef4444; }
+.empty-state { text-align: center; padding: 4rem 0; color: #b8a88a; font-size: .95rem; }
+.pagination-wrap { display: flex; justify-content: space-between; align-items: center; margin-top: 1.75rem; flex-wrap: wrap; gap: .75rem; }
 .pagination-info { font-size: .78rem; color: #a89880; }
 .pagination-links { display: flex; gap: .35rem; }
-
 .page-link {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  border: none;
-  background: #fff;
-  border: 1.5px solid #e0d8cc;
-  color: #5c4a32;
-  font-size: .82rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  box-shadow: 0 4px 16px rgba(44,36,22,.12);
+  width: 34px; height: 34px; border-radius: 9px;
+  background: #fff; border: 1.5px solid #e0d8cc;
+  color: #5c4a32; font-size: .82rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; box-shadow: 0 4px 16px rgba(44,36,22,.12);
   transition: all .2s;
 }
-
-.page-link:hover, .page-link.active {
-  background: #1c1610;
-  color: #fff;
-  box-shadow: none;
-}
-
-.btn-delete {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1.5px solid #d4c9b5;
-  background: #faf6f0;
-  color: #a89880;
-  font-size: .85rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all .2s;
-  cursor: pointer;
-}
-
-.btn-delete:hover {
-  background: #fee2e2;
-  border-color: #fecaca;
-  color: #ef4444;
-}
+.page-link:hover, .page-link.active { background: #1c1610; color: #fff; box-shadow: none; }
 </style>
 @endsection
 
@@ -243,11 +108,11 @@ body {
           <span class="status-badge {{ $cls }}">{{ ucfirst($booking->status) }}</span>
           <a href="/booking/{{ $booking->id }}" class="btn-view" title="Lihat Detail"><i class="bi bi-eye"></i></a>
 
-          @if($booking->status === 'Dikembalikan')
+          @if(in_array($booking->status, ['Dikembalikan', 'Ditolak']))
             <form action="/booking/{{ $booking->id }}" method="POST" onsubmit="return confirm('Hapus riwayat ini?')">
               @csrf
               @method('DELETE')
-           <button type="submit" class="btn-delete" title="Hapus Riwayat">
+              <button type="submit" class="btn-delete" title="Hapus Riwayat">
                 <i class="bi bi-trash"></i>
               </button>
             </form>

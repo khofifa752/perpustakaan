@@ -18,9 +18,7 @@ use App\Http\Controllers\Admin\ReviewAdminController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return view('partials.index');
-})->name('home');
+Route::get('/', [BookController::class, 'welcome'])->name('home');
 
 Route::resource('books', BookController::class);
 
@@ -102,6 +100,7 @@ Route::prefix('dashboard')
         // RIWAYAT PEMINJAMAN
         Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat.index');
         Route::get('/riwayat/laporan/download', [RiwayatController::class, 'downloadPdf'])->name('riwayat.laporan.download');
+        Route::delete('/riwayat/{booking}', [RiwayatController::class, 'destroy'])->name('riwayat.destroy');
 
         // USERS
         Route::get('/users', [UserController::class, 'index'])->name('users.index');

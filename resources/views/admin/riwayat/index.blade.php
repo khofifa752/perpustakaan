@@ -7,18 +7,16 @@
 <div class="w-full">
 
   <div class="mb-6">
-     <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Riwayat Peminjaman </em></h1>
-    </h1>
+    <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Riwayat <em>Peminjaman</em></h1>
     <p class="text-sm text-gray-400 mt-1 font-light">Peminjaman yang telah selesai atau ditolak</p>
   </div>
 
   @if(session('success'))
     <div class="mb-4 rounded-xl bg-green-50 border border-green-100 px-4 py-3 text-sm text-green-600 font-light">
-      {{ session('success') }}
+      ✅ {{ session('success') }}
     </div>
   @endif
 
-  <!-- Filter status pills -->
   <div class="flex items-center gap-2 mb-5 flex-wrap">
     <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}"
        class="px-4 py-1.5 rounded-full text-xs font-medium border transition
@@ -74,6 +72,7 @@
             <th class="px-6 py-4 font-medium">Tanggal Pinjam</th>
             <th class="px-6 py-4 font-medium">Tenggat Kembali</th>
             <th class="px-6 py-4 font-medium">Tanggal Selesai</th>
+            <th class="px-6 py-4 font-medium text-right">Aksi</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
@@ -87,14 +86,11 @@
                 ? ($b->returned_at ? $b->returned_at->timezone('Asia/Jakarta')->format('d-m-Y H:i') : '-')
                 : ($b->updated_at  ? $b->updated_at->timezone('Asia/Jakarta')->format('d-m-Y H:i')  : '-');
 
-              $tenggatLabel = $b->expired_at
-                ? $b->expired_at->format('d-m-Y')
-                : '-';
+              $tenggatLabel = $b->expired_at ? $b->expired_at->format('d-m-Y') : '-';
 
               $tenggatColor = '';
               if ($b->expired_at && $b->status === 'Dikembalikan' && $b->returned_at) {
-                $tenggatColor = $b->returned_at->gt($b->expired_at)
-                  ? 'text-red-500' : 'text-gray-500';
+                $tenggatColor = $b->returned_at->gt($b->expired_at) ? 'text-red-500' : 'text-gray-500';
               }
             @endphp
             <tr class="hover:bg-gray-50/60 transition">
@@ -118,10 +114,21 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-light">
                 {{ $selesai }}
               </td>
+              <td class="px-6 py-4 text-right">
+                <form action="{{ route('admin.riwayat.destroy', $b->id) }}" method="POST"
+                      onsubmit="return confirm('Yakin hapus riwayat ini?')">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit"
+                          class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition">
+                    Hapus
+                  </button>
+                </form>
+              </td>
             </tr>
           @empty
             <tr>
-              <td colspan="7" class="px-6 py-12 text-center text-sm text-gray-400 font-light">
+              <td colspan="8" class="px-6 py-12 text-center text-sm text-gray-400 font-light">
                 Belum ada riwayat peminjaman.
               </td>
             </tr>
@@ -139,24 +146,18 @@
 
 </div>
 
-{{-- ── MODAL LAPORAN ── --}}
+{{-- MODAL LAPORAN --}}
 <div id="riwayatModal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/40 p-4">
   <div class="w-full max-w-5xl rounded-2xl bg-white p-6 shadow-2xl max-h-[90vh] overflow-auto border border-gray-100">
-
     <div class="mb-4 flex items-center justify-between">
       <div>
-        <h2 class="text-xl font-semibold text-gray-900" style="font-family:'Playfair Display',serif;">
-          Preview Laporan Riwayat
-        </h2>
+        <h2 class="text-xl font-semibold text-gray-900" style="font-family:'Playfair Display',serif;">Preview Laporan Riwayat</h2>
         <p class="text-sm text-gray-400 font-light">Peminjaman selesai & ditolak</p>
       </div>
       <button onclick="closeRiwayatModal()"
-        class="rounded-lg bg-red-50 text-red-500 px-4 py-2 text-sm font-medium hover:bg-red-100 transition">
-        Tutup
-      </button>
+        class="rounded-lg bg-gray-100 text-gray-600 px-4 py-2 text-sm font-medium hover:bg-gray-200 transition">✕ Tutup</button>
     </div>
 
-    <!-- Print area -->
     <div id="riwayatPrintArea" class="mx-auto max-w-[900px] rounded bg-white p-10 border border-gray-100">
       <div class="mb-5 text-center">
         <div class="text-2xl font-bold">Laporan Riwayat Peminjaman</div>
@@ -206,13 +207,9 @@
 
     <div class="mt-5 flex justify-end gap-3">
       <button onclick="printRiwayat()"
-        class="rounded-lg bg-yellow-50 text-yellow-600 px-4 py-2 text-sm font-medium hover:bg-yellow-100 transition">
-        <i class="fas fa-print mr-1"></i> Print
-      </button>
+        class="rounded-lg bg-gray-100 text-gray-700 px-4 py-2 text-sm font-medium hover:bg-gray-200 transition">🖨️ Print</button>
       <a href="{{ route('admin.riwayat.laporan.download', ['q' => request('q'), 'status' => request('status')]) }}"
-        class="rounded-lg bg-gray-900 text-white px-4 py-2 text-sm font-medium hover:bg-gray-700 transition">
-        <i class="fas fa-download mr-1"></i> Download PDF
-      </a>
+        class="rounded-lg bg-gray-900 text-white px-4 py-2 text-sm font-medium hover:bg-gray-700 transition">⬇️ Download PDF</a>
     </div>
   </div>
 </div>

@@ -40,6 +40,12 @@ body { font-family: 'DM Sans', sans-serif; background: #f0ebe2; }
 .s-ditolak      { color: #991b1b; background: #fee2e2; }
 .s-dikembalikan { color: #44403c; background: #f5f5f4; }
 .s-default      { color: #3730a3; background: #e0e7ff; }
+.s-terlambat    { color: #fff; background: #dc2626; }
+.badge-terlambat {
+  font-size: .68rem; font-weight: 700; color: #fff;
+  background: #dc2626; padding: 3px 10px; border-radius: 999px;
+  white-space: nowrap;
+}
 .btn-view {
   width: 36px; height: 36px; border-radius: 10px;
   border: 1.5px solid #e8e0d5; background: #faf6f0;
@@ -85,6 +91,12 @@ body { font-family: 'DM Sans', sans-serif; background: #f0ebe2; }
     @forelse ($bookings as $booking)
       @php
         $s = strtolower($booking->status ?? '');
+        $terlambat = in_array($booking->status, ['Disetujui', 'Dipinjam'])
+                  && $booking->expired_at
+                  && \Carbon\Carbon::parse($booking->expired_at)->isPast();
+      $hariTerlambat = $terlambat
+  ? max(1, (int)\Carbon\Carbon::parse($booking->expired_at)->diffInDays(now()))
+  : 0;
         $cls = match($s) {
           'diajukan'     => 's-diajukan',
           'disetujui'    => 's-disetujui',
@@ -99,15 +111,18 @@ body { font-family: 'DM Sans', sans-serif; background: #f0ebe2; }
           <div class="booking-sub">
             <span>#{{ $booking->code }}</span>
             <span>Pinjam: {{ \Carbon\Carbon::parse($booking->created_at)->translatedFormat('d M Y') }}</span>
-            @if($booking->due_date)
-              <span>Kembali: {{ \Carbon\Carbon::parse($booking->due_date)->translatedFormat('d M Y') }}</span>
+            @if($booking->expired_at)
+              <span>Tenggat: {{ \Carbon\Carbon::parse($booking->expired_at)->translatedFormat('d M Y') }}</span>
             @endif
           </div>
         </div>
         <div class="booking-right">
-          <span class="status-badge {{ $cls }}">{{ ucfirst($booking->status) }}</span>
+          @if($terlambat)
+            <span class="badge-terlambat">⚠️ Terlambat {{ $hariTerlambat }} hari</span>
+          @else
+            <span class="status-badge {{ $cls }}">{{ ucfirst($booking->status) }}</span>
+          @endif
           <a href="/booking/{{ $booking->id }}" class="btn-view" title="Lihat Detail"><i class="bi bi-eye"></i></a>
-
           @if(in_array($booking->status, ['Dikembalikan', 'Ditolak']))
             <form action="/booking/{{ $booking->id }}" method="POST" onsubmit="return confirm('Hapus riwayat ini?')">
               @csrf

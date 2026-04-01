@@ -6,18 +6,17 @@ use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
 class BookingController extends Controller
 {
-    public function index()
-    {
-        return view('pages.booking', [
-            'bookings' => Booking::with(['book', 'user'])
-                ->where('user_id', auth()->id())
-                ->latest()
-                ->get(),
-        ]);
-    }
+   public function index()
+{
+    return view('pages.booking', [
+        'bookings' => Booking::with(['book', 'user'])
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get(),
+    ]);
+}
 
     public function store(Request $request)
     {
@@ -25,8 +24,9 @@ class BookingController extends Controller
             'book_id' => 'required|exists:books,id',
         ]);
 
+       
         $masihPinjam = Booking::where('user_id', Auth::id())
-            ->whereIn('status', ['Diajukan', 'Disetujui'])
+            ->whereIn('status', ['Diajukan', 'Disetujui']) 
             ->exists();
 
         if ($masihPinjam) {
@@ -57,27 +57,28 @@ class BookingController extends Controller
     }
 
     public function ajukanPengembalian(Booking $booking)
-    {
-        abort_unless($booking->user_id === auth()->id(), 403);
+{
+    abort_unless($booking->user_id === auth()->id(), 403);
 
-        if ($booking->status !== 'Disetujui') {
-            return back()->with('error', 'Pengembalian hanya bisa diajukan saat status Disetujui.');
+   
+    if ($booking->status !== 'Dipinjam') {
+        return back()->with('error', 'Pengembalian hanya bisa diajukan saat status Disetujui.');
+    }
+
+    $booking->status = 'Menunggu Pengembalian';
+    $booking->return_requested_at = Carbon::now('Asia/Jakarta'); 
+    $booking->save();
+
+    return back()->with('success', 'Pengembalian diajukan, menunggu konfirmasi petugas/admin.');
+}
+
+        public function destroy(Booking $booking)
+        {
+            abort_unless($booking->user_id === auth()->id(), 403);
+            abort_unless($booking->status === 'Dikembalikan', 403);
+
+            $booking->delete();
+
+            return back()->with('success', 'Riwayat peminjaman berhasil dihapus.');
         }
-
-        $booking->status = 'Menunggu Pengembalian';
-        $booking->return_requested_at = Carbon::now('Asia/Jakarta');
-        $booking->save();
-
-        return back()->with('success', 'Pengembalian diajukan, menunggu konfirmasi petugas/admin.');
-    }
-
-    public function destroy(Booking $booking)
-    {
-        abort_unless($booking->user_id === auth()->id(), 403);
-        abort_unless(in_array($booking->status, ['Dikembalikan', 'Ditolak']), 403);
-
-        $booking->delete();
-
-        return back()->with('success', 'Riwayat peminjaman berhasil dihapus.');
-    }
 }

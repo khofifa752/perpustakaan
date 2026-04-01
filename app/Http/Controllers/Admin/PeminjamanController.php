@@ -11,9 +11,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PeminjamanController extends Controller
 {
-    public function index()
+   public function index()
     {
-        $bookings = Booking::with(['book','user'])->latest()->get();
+        $bookings = Booking::with(['book','user'])
+            ->whereIn('status', ['Diajukan', 'Disetujui', 'Dipinjam',])
+            ->latest()
+            ->get();
         return view('admin.peminjaman.index', compact('bookings'));
     }
 
@@ -26,7 +29,7 @@ class PeminjamanController extends Controller
     public function updateStatus(Request $request, Booking $booking)
 {
     $request->validate([
-        'status' => 'required|in:Diajukan,Disetujui,Ditolak,Dikembalikan',
+       'status' => 'required|in:Diajukan,Disetujui,Dipinjam,Ditolak,Dikembalikan'
     ]);
 
     DB::transaction(function () use ($request, $booking) {

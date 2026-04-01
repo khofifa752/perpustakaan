@@ -1,4 +1,15 @@
-
+{{-- 
+  Ganti bagian index() di PeminjamanController.php menjadi:
+  
+  public function index()
+  {
+      $bookings = Booking::with(['book','user'])
+          ->whereIn('status', ['Diajukan', 'Disetujui', 'Dipinjam', 'Menunggu Pengembalian'])
+          ->latest()
+          ->get();
+      return view('admin.peminjaman.index', compact('bookings'));
+  }
+--}}
 @extends('admin.layouts.main')
 
 @section('page-title', 'Peminjaman')
@@ -8,7 +19,8 @@
 <div class="w-full">
 
   <div class="mb-6">
-     <h1 style="font-family:'Playfair Display',serif;" class="text-2xl font-normal text-gray-900">Kelola Peminjaman</h1>
+    <h1 class="text-2xl font-semibold text-gray-900" style="font-family:'Playfair Display',serif;">
+      Peminjaman <em>Aktif</em>
     </h1>
     <p class="text-sm text-gray-400 mt-1 font-light">Kelola peminjaman yang sedang berjalan</p>
   </div>
@@ -83,10 +95,10 @@
                   @if($b->status === 'Diajukan')
                     <form action="{{ route('admin.peminjaman.updateStatus', $b->id) }}" method="POST">
                       @csrf @method('PATCH')
-                      <input type="hidden" name="status" value="Disetujui">
+                      <input type="hidden" name="status" value="Dipinjam">
                       <button type="submit" onclick="return confirm('Setujui peminjaman ini?')"
                         class="inline-flex items-center rounded-lg bg-green-600 px-3 py-2 text-xs font-medium text-white shadow-sm hover:bg-green-700 transition">
-                        ✓ Setujui
+                        ✓ Setujui & Pinjam
                       </button>
                     </form>
                     <form action="{{ route('admin.peminjaman.updateStatus', $b->id) }}" method="POST">
@@ -98,14 +110,14 @@
                       </button>
                     </form>
                   @elseif($b->status === 'Ditolak')
-                    <!-- <form action="{{ route('admin.peminjaman.updateStatus', $b->id) }}" method="POST">
+                    <form action="{{ route('admin.peminjaman.updateStatus', $b->id) }}" method="POST">
                       @csrf @method('PATCH')
                       <input type="hidden" name="status" value="Diajukan">
                       <button type="submit" onclick="return confirm('Batalkan penolakan?')"
                         class="inline-flex items-center rounded-lg bg-yellow-500 px-3 py-2 text-xs font-medium text-white shadow-sm hover:bg-yellow-600 transition">
                         ↩ Batalkan
                       </button>
-                    </form> -->
+                    </form>
                   @else
                     <span class="text-xs text-gray-300 italic">—</span>
                   @endif

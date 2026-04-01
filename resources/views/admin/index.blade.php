@@ -97,7 +97,7 @@
                             <p class="text-xs font-medium text-yellow-600 uppercase tracking-widest">Buku Terlambat</p>
                             <h3 class="serif text-4xl font-normal num-yellow mt-2">{{ number_format($bukuTerlambat) }}</h3>
                             <p class="text-xs text-yellow-500 mt-2 font-light">
-                                @if($bukuTerlambat > 0) Perlu tindakan @else Semua tepat waktu @endif
+                                @if($bukuTerlambat > 0) Belum dikembalikan @else Semua tepat waktu @endif
                             </p>
                         </div>
                         <div class="icon-yellow w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0">

@@ -48,7 +48,7 @@
             <i class="fas fa-exchange-alt w-4 text-center"></i>
             <span>Peminjaman</span>
             @php
-                $aktif = \App\Models\Booking::whereIn('status',['Diajukan','Disetujui','Dipinjam','Menunggu Pengembalian'])->count();
+               $aktif = \App\Models\Booking::whereIn('status',['Diajukan','Disetujui','Dipinjam'])->count();
             @endphp
             @if($aktif > 0)
                 <span class="ml-auto text-xs bg-yellow-100 text-yellow-600 px-2 py-0.5 rounded-full font-medium">

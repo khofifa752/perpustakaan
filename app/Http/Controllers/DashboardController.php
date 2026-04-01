@@ -16,10 +16,10 @@ class DashboardController extends Controller
         $totalStock      = Book::sum('stock');
         $totalUser       = User::where('role', 'peminjam')->count();
         $peminjamAktif   = Booking::whereIn('status', ['Diajukan', 'Disetujui', 'Dipinjam'])->count();
-        $bukuTerlambat   = Booking::where('status', 'Dipinjam')
-                                ->whereNotNull('expired_at')
-                                ->where('expired_at', '<', Carbon::today())
-                                ->count();
+        $bukuTerlambat = Booking::whereIn('status', ['Disetujui', 'Dipinjam'])
+                        ->whereNotNull('expired_at')
+                        ->where('expired_at', '<', now())
+                        ->count();
 
         $peminjamTerbaru = Booking::with(['user', 'book'])
                                 ->latest()
